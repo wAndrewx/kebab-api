@@ -29,23 +29,22 @@ router.post("/", async (req, res, next) => {
     const genVerifyHash = cryptoJS.AES.encrypt(
       //handle email regex front end
       body.email,
-      process.env.SECRET
+      process.env.VERIFY_SECRET
     )
       .toString()
       .replaceAll("/", "-");
-    console.log(genVerifyHash);
 
     const reqUser = {
       username: body.username, //req.body.username
       email: body.email,
-      passwordHash: pwHash, //bcrypt
-      verifyHash: genVerifyHash,
+      passwordHash: pwHash, //hash
+      verifyHash: genVerifyHash, //hash
     };
 
     const newUser = new User(reqUser);
     await newUser.save();
     //send email to verify
-    // utils.emailVerifyHash(genVerifyHash, body.email);
+    utils.emailVerifyHash(genVerifyHash, body.email);
     return res
       .send({ message: "Account created, verify your email" })
       .status(201);
@@ -61,14 +60,12 @@ router.get("/verify/:hash", async (req, res, next) => {
   const paramHash = req.params.hash.replaceAll("-", "/");
   const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.SECRET);
   const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
-  console.log("DECRYPT:", toStringHash);
   try {
     await User.findOneAndUpdate({ email: toStringHash }, { verified: true });
     res.sendStatus(204);
   } catch (error) {
     res.sendStatus(400);
   }
-  //then find email and set verified to true;
 });
 
 module.exports = router;
