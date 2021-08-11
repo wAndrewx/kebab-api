@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const loginRoute = require("./controllers/handleLogin");
 const registerRoute = require("./controllers/handleRegister");
 const kebabRoute = require("./controllers/handleKebab");
+const userRoute = require("./controllers/handleUser");
+const auth = require("./utils/middleware/auth");
 // console.log(process.env.MONGO_PW);
 try {
   const mongoURL = `mongodb+srv://andrewadmin:${process.env.MONGODB_PW}@cluster0.iiydq.mongodb.net/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`;
@@ -21,9 +23,10 @@ try {
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/user", userRoute);
 app.use("/api/register", registerRoute);
 app.use("/api/login", loginRoute);
-app.use("/api/kebab", kebabRoute);
+app.use("/api/kebab", auth.verifyToken, kebabRoute);
 
 app.get("/", () => {
   console.log("connected");
