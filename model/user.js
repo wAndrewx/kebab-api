@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-  kebab: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Kebab",
-  },
+  kebab: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Kebab",
+    },
+  ],
   username: {
     type: String,
     required: [true, "Username must be provided"],
