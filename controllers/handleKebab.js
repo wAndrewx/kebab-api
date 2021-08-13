@@ -6,44 +6,66 @@ const redirectLink = "http://localhost:3000/";
 
 router.get("/feed", async (req, res, next) => {
   if (!req.user) {
-    res.redirect(redirectLink);
+    return res.redirect(redirectLink);
   }
   const allFeed = await Kebab.find({}).populate("user", {
     username: 1,
   }); // be sure to .sort the objects by date,front end
-  res.json(allFeed);
+  return res.json(allFeed);
 });
 
 router.post("/", async (req, res) => {
-  // fix so that user that tweeted stores the twwwt in doc
   if (!req.user) {
-    res.redirect(redirectLink);
+    return res.redirect(redirectLink);
   }
-  const content = { content: req.body.content, user: req.token.id };
-  const keebab = new Kebab(content);
+  try {
+    const content = { content: req.body.content, user: req.token.id };
+    const keebab = new Kebab(content);
+    const updateUserKebab = await User.findById(req.token.id);
 
-  const updateUserKebab = await User.findById(req.token.id);
-  updateUserKebab.kebab.push(keebab);
-  await updateUserKebab.save();
-  await keebab.save();
-  return res.send();
+    updateUserKebab.kebab.push(keebab);
+    await updateUserKebab.save();
+    await keebab.save();
+    return res.send();
+  } catch (err) {
+    return res.send(err);
+  }
 });
 
 // requesting someone elses tweets
 router.get("/:id", async (req, res) => {
   if (!req.user) {
-    res.redirect(redirectLink);
+    return res.redirect(redirectLink);
   }
-  const profileID = req.params.id;
-  // const getProfileTweet = await User.find({ _id: profileID }).populate("user", {
-  //   username: 1,
-  // });
-  res.send(getProfileTweet);
+  try {
+    const profileID = req.params.id;
+    const getProfileTweet = await Kebab.find({ user: { _id: profileID } });
+    return res.send(getProfileTweet);
+  } catch (err) {
+    return res.send(err);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
   if (!req.user) {
-    res.redirect(redirectLink);
+    return res.redirect(redirectLink);
+  }
+  const kebabID = req.params.id;
+  if (kebabID) {
+    console.log(req.user.kebab.includes(kebabID));
+    if (req.user.kebab.includes(kebabID)) {
+      try {
+        await Kebab.findByIdAndDelete(kebabID); // from kebab
+        await User.updateOne(
+          // del from user
+          { _id: req.user.id },
+          { $pullAll: { kebab: [kebabID] } }
+        );
+        return res.send({ message: "deleted" });
+      } catch (error) {
+        return res.send(error);
+      }
+    }
   }
 });
 
