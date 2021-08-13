@@ -11,7 +11,7 @@ router.get("/feed", async (req, res, next) => {
   const allFeed = await Kebab.find({}).populate("user", {
     username: 1,
   }); // be sure to .sort the objects by date,front end
-  return res.json(allFeed);
+  return res.json(allFeed).status(200);
 });
 
 router.post("/", async (req, res) => {
@@ -26,9 +26,9 @@ router.post("/", async (req, res) => {
     updateUserKebab.kebab.push(keebab);
     await updateUserKebab.save();
     await keebab.save();
-    return res.send();
+    return res.sendStatus(201);
   } catch (err) {
-    return res.send(err);
+    return res.send(err).status(400);
   }
 });
 
@@ -40,9 +40,9 @@ router.get("/:id", async (req, res) => {
   try {
     const profileID = req.params.id;
     const getProfileTweet = await Kebab.find({ user: { _id: profileID } });
-    return res.send(getProfileTweet);
+    return res.send(getProfileTweet).status(200);
   } catch (err) {
-    return res.send(err);
+    return res.send(err).status(400);
   }
 });
 
@@ -61,15 +61,44 @@ router.delete("/:id", async (req, res) => {
           { _id: req.user.id },
           { $pullAll: { kebab: [kebabID] } }
         );
-        return res.send({ message: "deleted" });
+        return res.send(200);
       } catch (error) {
         return res.send(error);
       }
+    } else {
+      return res.sendStatus(400);
     }
   }
 });
 
-router.put("/like/:id");
-router.put("/rekebab/:id"); //update the date so yeah...
+router.put("/like/:id", async (req, res, next) => {
+  if (!req.user) {
+    return res.redirect(redirectLink);
+  }
+  const kebabID = req.params.id;
+  const like = req.body.like;
+  try {
+    await Kebab.findByIdAndUpdate(kebabID, { likes: like });
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.send(error).status(400);
+  }
+});
+router.put("/rekebab/:id", async (req, res, next) => {
+  if (!req.user) {
+    return res.redirect(redirectLink);
+  }
+  const kebabID = req.params.id;
+  const reKebab = req.body.reKebab;
+  try {
+    await Kebab.findByIdAndUpdate(kebabID, {
+      reKebabs: reKebab,
+      date: Date.now,
+    });
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.send(error).status(400);
+  }
+}); //update the date so yeah...
 
 module.exports = router;
