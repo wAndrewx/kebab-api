@@ -8,10 +8,13 @@ router.get("/feed", async (req, res, next) => {
   if (!req.user) {
     return res.redirect(redirectLink);
   }
-  const allFeed = await Kebab.find({}).populate("user", {
-    username: 1,
-  }); // be sure to .sort the objects by date,front end
+  const allFeed = await Kebab.find({})
+    .populate("user", {
+      username: 1,
+    })// be sure to .sort the objects by date,front end
+  console.log(allFeed);
   return res.json(allFeed).status(200);
+  // return res.sendStatus(200);
 });
 
 router.post("/", async (req, res) => {

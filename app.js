@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const loginRoute = require("./controllers/handleLogin");
 const registerRoute = require("./controllers/handleRegister");
 const kebabRoute = require("./controllers/handleKebab");
-const userRoute = require("./controllers/handleUser");
 const auth = require("./utils/middleware/auth");
 // console.log(process.env.MONGO_PW);
 try {
@@ -23,7 +22,6 @@ try {
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/user", userRoute);
 app.use("/api/register", registerRoute);
 app.use("/api/login", loginRoute);
 app.use("/api/kebab", auth.verifyToken, kebabRoute);
