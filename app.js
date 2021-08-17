@@ -7,7 +7,7 @@ const loginRoute = require("./controllers/handleLogin");
 const registerRoute = require("./controllers/handleRegister");
 const kebabRoute = require("./controllers/handleKebab");
 const auth = require("./utils/middleware/auth");
-// console.log(process.env.MONGO_PW);
+
 try {
   const mongoURL = `mongodb+srv://andrewadmin:${process.env.MONGODB_PW}@cluster0.iiydq.mongodb.net/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`;
   mongoose.connect(mongoURL, {
