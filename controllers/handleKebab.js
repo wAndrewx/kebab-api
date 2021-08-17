@@ -11,9 +11,7 @@ router.get("/feed", async (req, res, next) => {
   const allFeed = await Kebab.find({}).populate("user", {
     username: 1,
   }); // be sure to .sort the objects by date,front end
-  // console.log(allFeed);
   return res.json(allFeed).status(200);
-  // return res.sendStatus(200);
 });
 
 router.post("/", async (req, res) => {
@@ -23,7 +21,6 @@ router.post("/", async (req, res) => {
 
   try {
     const content = { content: req.body.content, user: req.token.id };
-    // console.log(req.user)
     const keebab = new Kebab(content);
     console.log(keebab);
     const updateUserKebab = await User.findById(req.token.id);

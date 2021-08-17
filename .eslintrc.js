@@ -10,4 +10,7 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {},
+  env: {
+    "jest/globals": true,
+  },
 };
