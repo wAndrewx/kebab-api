@@ -1,6 +1,6 @@
 ## Hosting
 - Front end hosted on netlify
-- API hosted on AWS API Gateway
+- API hosted on AWS Lambda using AWS API Gateway 
 ## Technologies
 - Node
 - Express
