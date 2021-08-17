@@ -8,11 +8,10 @@ router.get("/feed", async (req, res, next) => {
   if (!req.user) {
     return res.redirect(redirectLink);
   }
-  const allFeed = await Kebab.find({})
-    .populate("user", {
-      username: 1,
-    })// be sure to .sort the objects by date,front end
-  console.log(allFeed);
+  const allFeed = await Kebab.find({}).populate("user", {
+    username: 1,
+  }); // be sure to .sort the objects by date,front end
+  // console.log(allFeed);
   return res.json(allFeed).status(200);
   // return res.sendStatus(200);
 });
@@ -21,14 +20,20 @@ router.post("/", async (req, res) => {
   if (!req.user) {
     return res.redirect(redirectLink);
   }
+
   try {
     const content = { content: req.body.content, user: req.token.id };
+    // console.log(req.user)
     const keebab = new Kebab(content);
+    console.log(keebab);
     const updateUserKebab = await User.findById(req.token.id);
 
     updateUserKebab.kebab.push(keebab);
     await updateUserKebab.save();
     await keebab.save();
+    var socketio = req.app.get("socketIO"); //need to  emit "new:kebab" and send through the data
+    socketio.emit("post:kebab", { keebab }); // handshake and find a way to constantly update front end
+
     return res.sendStatus(201);
   } catch (err) {
     return res.send(err).status(400);
@@ -60,6 +65,7 @@ router.delete("/:id", async (req, res) => {
       try {
         await Kebab.findByIdAndDelete(kebabID); // from kebab
         await User.updateOne(
+          //user->kebab->id->delete
           // del from user
           { _id: req.user.id },
           { $pullAll: { kebab: [kebabID] } }
