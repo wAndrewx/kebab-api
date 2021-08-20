@@ -1,7 +1,7 @@
 require("dotenv").config();
 const goodUser = {
   username: "testUser",
-  password: process.env.TRUSTED_USER_PW,
+  password: "password123",
 };
 const goodUserRegister = {
   username: "testUser",

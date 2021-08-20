@@ -19,10 +19,10 @@ router.post("/", async (req, res, next) => {
     loggingUser.passwordHash
   );
   if (!comparePW) {
-    return res.send({ message: "Wrong password" }).status(406);
+    return res.status(406).send({ message: "Wrong password" });
   }
   if (!loggingUser.verified) {
-    return res.send({ message: "Please verify your account" }).status(403);
+    return res.status(403).send({ message: "Please verify your account" });
   }
 
   if (comparePW && loggingUser.verified) {
@@ -31,7 +31,7 @@ router.post("/", async (req, res, next) => {
       process.env.JWT_SECRET
     );
 
-    return res.send({ message: "Succesfully logged in", token }).status(202);
+    return res.status(202).send({ message: "Succesfully logged in", token });
   }
 });
 module.exports = router;

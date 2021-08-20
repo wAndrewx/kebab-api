@@ -14,26 +14,47 @@ describe("User Login /POST", () => {
     await mongoose.connection.close();
   });
 
-  test("should fail since does not exist user ", () => {
-    req.post("/api/login").send(seed.nonExistantUser).expect(400);
+  test("should fail since does not exist user ", async () => {
+    const res = await req
+      .post("/api/login")
+      .send(seed.nonExistantUser)
+      .expect(400);
+    expect(res.body).toBeDefined();
+    expect(res.body).toHaveProperty("message", "User does not exist");
   });
-  test("should fail since unverified user ", () => {
-    req.post("/api/login").send(seed.unverified).expect(403);
+
+  test("should fail since unverified user ", async () => {
+    const res = await req
+      .post("/api/login")
+      .send({ username: seed.unverified.username, password: "password123" })
+      .expect(403);
+    expect(res.body).toBeDefined();
+    expect(res.body).toHaveProperty("message", "Please verify your account");
   });
-  test("should fail wrong password ", () => {
-    req
+
+  test("should fail wrong password ", async () => {
+    const res = await req
       .post("/api/login")
       .send({
         username: seed.goodUserRegister.username,
-        password: "wrongpassword",
+        password: "wrongpass",
       })
       .expect(406);
+    expect(res.body).toBeDefined();
+    expect(res.body).toHaveProperty("message", "Wrong password");
   });
-  test("should fail since empty fields ", () => {
-    req.post("/api/login").send().expect(406);
+
+  test("should fail since empty fields ", async () => {
+    const res = await req.post("/api/login").send().expect(406);
+    expect(res.body).toBeDefined();
+    expect(res.body).toHaveProperty("message", "Fill in the fields");
   });
-  test("should successfully login ", () => {
-    req.post("/api/login").send(seed.goodUser).expect(202);
+
+  test("should successfully login ", async () => {
+    const res = await req.post("/api/login").send(seed.goodUser).expect(202);
+    expect(res.body).toBeDefined();
+    expect(res.body).toHaveProperty("message", "Succesfully logged in");
+    expect(res.body.token).toBeDefined();
   });
 });
 
