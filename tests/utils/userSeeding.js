@@ -1,6 +1,7 @@
 require("dotenv").config();
 const goodUser = {
   username: "testUser",
+  email: "test@email.com",
   password: "password123",
 };
 const goodUserRegister = {
@@ -18,6 +19,7 @@ const unverified = {
 };
 const nonExistantUser = {
   username: "userDNE",
+  email: "emailDNE@mail.com",
   password: process.env.TRUSTED_USER_PW,
 };
 

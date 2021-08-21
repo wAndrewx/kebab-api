@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
   try {
     const reqName = await User.find({ username: body.username });
     if (Object.keys(body).length === 0) {
-      return res.send({ message: "Fill in the fields" }).sendStatus(400);
+      return res.status(400).send({ message: "Fill in the fields" });
     }
 
     if (reqName.length !== 0) {
@@ -22,7 +22,7 @@ router.post("/", async (req, res, next) => {
     }
 
     if (body.password.length < 7) {
-      return res.send({ message: "Password is too short" }).sendStatus(406);
+      return res.status(406).send({ message: "Password is too short" });
     }
 
     const pwHash = await bcrypt.hash(body.password, 10);
@@ -46,11 +46,11 @@ router.post("/", async (req, res, next) => {
     //send email to verify
     utils.emailVerifyHash(genVerifyHash, body.email);
     return res
-      .send({ message: "Account created, verify your email" })
-      .status(201);
+      .status(201)
+      .send({ message: "Account created, verify your email" });
   } catch (err) {
     if (err.name.includes("MongoError")) {
-      return res.send({ message: "Use a different email" });
+      return res.status(406).send({ message: "Use a different email" });
     }
     return res.send(err);
   }
@@ -62,9 +62,9 @@ router.get("/verify/:hash", async (req, res, next) => {
   const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
   try {
     await User.findOneAndUpdate({ email: toStringHash }, { verified: true });
-    res.sendStatus(204);
+    res.status(204);
   } catch (error) {
-    res.sendStatus(400);
+    res.status(400);
   }
 });
 
