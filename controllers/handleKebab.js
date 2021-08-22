@@ -21,16 +21,14 @@ router.post("/", async (req, res) => {
 
   try {
     const content = { content: req.body.content, user: req.token.id };
-    const keebab = new Kebab(content);
-    console.log(keebab);
+    const newKebab = new Kebab(content);
+    console.log(newKebab);
     const updateUserKebab = await User.findById(req.token.id);
 
-    updateUserKebab.kebab.push(keebab);
+    updateUserKebab.kebab.push(newKebab);
     await updateUserKebab.save();
-    await keebab.save();
-    var socketio = req.app.get("socketIO"); //need to  emit "new:kebab" and send through the data
-    socketio.emit("post:kebab", { keebab }); // handshake and find a way to constantly update front end
-
+    await newKebab.save();
+ 
     return res.sendStatus(201);
   } catch (err) {
     return res.send(err).status(400);

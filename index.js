@@ -7,6 +7,7 @@ const options = {
 };
 const io = require("socket.io")(httpServer, options);
 const getKebab = require("./socket/handleGetKebab"); //routes
+const createKebab = require("./socket/handleNewKebab"); //routes
 app.set("socketio", io);
 
 // for https makes sure you get your ssl certs
@@ -34,6 +35,7 @@ const onConnection = (socket) => {
 
   if (socket.user) {
     getKebab(io, socket);
+    createKebab(io, socket);
   } // routes}
 };
 io.on("connect", onConnection); // on connection do these tasks
