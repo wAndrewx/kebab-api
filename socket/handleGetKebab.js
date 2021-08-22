@@ -9,10 +9,10 @@ module.exports = (io, socket) => {
 
     // CURSOR LISTENERS
     kebabCursor.on("data", (docs) => {
-      socket.emit("kebab-feed", docs); //emit
+      socket.emit("feed:kebab", docs); //emit
     });
     kebabCursor.on("error", (err) => {
-      socket.emit("kebab-error", err);
+      socket.emit("error:kebab", err);
     });
   };
   socket.on("get:kebab", getKebabs); //getkebabs is what happens when get:kebab event happens

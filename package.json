@@ -7,7 +7,9 @@
     "start": "node ./index.js",
     "dev": "nodemon ./index.js",
     "test": "jest --verbose",
-    "start:test": "cross-env NODE_ENV=test node index.js"
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "build:dev": "serverless deploy --stage dev",
+    "build:prod": "serverless deploy --stage production"
   },
   "author": "Andrew Huynh | @wAndrewx",
   "license": "ISC",
@@ -33,6 +35,8 @@
   "jest": {
     "testEnvironment": "node",
     "verbose": true,
-    "transformIgnorePatterns": ["node_modules"]
+    "transformIgnorePatterns": [
+      "node_modules"
+    ]
   }
 }
