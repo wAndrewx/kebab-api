@@ -1,7 +1,7 @@
 org: wordrew
 app: twitter-mock
 service: twitter-mock-api
-# useDotenv: true
+useDotenv: true
 
 frameworkVersion: "2"
 
@@ -17,4 +17,11 @@ functions:
     events:
       - http: ANY /{proxy+} # do not change
       - http: ANY /
-   
+    environment:
+      MONGODB_PW: ${env:MONGODB_PW}
+      MONGODB_NAME: ${env:MONGODB_NAME}
+      VERIFY_SECRET: ${env:VERIFY_SECRET}
+      JWT_SECRET: ${env:JWT_SECRET}
+      GMAIL_EMAIL: ${env:GMAIL_EMAIL}
+      GMAIL_PW: ${env:GMAIL_PW}
+      TRUSTED_USER_PW: ${env:TRUSTED_USER_PW}
