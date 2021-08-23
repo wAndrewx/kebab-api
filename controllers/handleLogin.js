@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 //can only log in if verified
@@ -14,7 +14,7 @@ router.post("/", async (req, res, next) => {
     return res.status(400).send({ message: "User does not exist" });
   }
 
-  const comparePW = await bcrypt.compare(
+  const comparePW = await bcryptjs.compare(
     body.password,
     loggingUser.passwordHash
   );

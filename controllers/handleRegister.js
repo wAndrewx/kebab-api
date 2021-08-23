@@ -1,7 +1,7 @@
 require("dotenv");
 const router = require("express").Router();
 const User = require("../model/user");
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const cryptoJS = require("crypto-js");
 const utils = require("../utils/nodemail");
 
@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
       return res.status(406).send({ message: "Password is too short" });
     }
 
-    const pwHash = await bcrypt.hash(body.password, 10);
+    const pwHash = await bcryptjs.hash(body.password, 10);
     const genVerifyHash = cryptoJS.AES.encrypt(
       //handle email regex front end
       body.email,

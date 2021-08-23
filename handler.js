@@ -1,15 +1,6 @@
 "use strict";
+const serverlessExpress = require("@vendia/serverless-express");
+// const serverlesshttp = require("serverless-http")
+const app = require("./app");
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: "Go Serverless v2.0! Your function executed successfully!",
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
-};
+exports.handler = serverlessExpress({ app });

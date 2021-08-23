@@ -1,19 +1,20 @@
 org: wordrew
 app: twitter-mock
 service: twitter-mock-api
+# useDotenv: true
 
-frameworkVersion: '2'
-
+frameworkVersion: "2"
 
 provider:
   name: aws
   runtime: nodejs12.x
-  lambdaHashingVersion: '20201221'
+  memorySize: 256
+  lambdaHashingVersion: "20201221"
 
 functions:
-  hello:
-    handler: handler.hello
+  twitter-mock-API:
+    handler: handler.handler
     events:
-      - http:
-          path: /
-          method: get
+      - http: ANY /{proxy+} # do not change
+      - http: ANY /
+   

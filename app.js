@@ -26,8 +26,9 @@ app.use("/api/register", registerRoute);
 app.use("/api/login", loginRoute);
 app.use("/api/kebab", auth.verifyToken, kebabRoute);
 
-app.get("/", () => {
+app.get("/", (req, res) => {
   console.log("connected");
+  res.send("Connected");
 });
 
 module.exports = app;

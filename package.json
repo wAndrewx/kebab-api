@@ -14,7 +14,9 @@
   "author": "Andrew Huynh | @wAndrewx",
   "license": "ISC",
   "dependencies": {
+    "@vendia/serverless-express": "^4.3.9",
     "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
@@ -23,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
     "nodemailer": "^6.6.3",
+    "serverless-http": "^2.7.0",
     "ws": "^8.0.0"
   },
   "devDependencies": {

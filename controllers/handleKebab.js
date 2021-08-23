@@ -6,7 +6,7 @@ const redirectLink = "http://localhost:3000/";
 
 router.get("/feed", async (req, res, next) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
   const allFeed = await Kebab.find({}).populate("user", {
     username: 1,
@@ -16,7 +16,7 @@ router.get("/feed", async (req, res, next) => {
 
 router.post("/", async (req, res) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
 
   try {
@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
     updateUserKebab.kebab.push(newKebab);
     await updateUserKebab.save();
     await newKebab.save();
- 
+
     return res.sendStatus(201);
   } catch (err) {
     return res.send(err).status(400);
@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
 // requesting someone elses tweets
 router.get("/:id", async (req, res) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
   try {
     const profileID = req.params.id;
@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
   const kebabID = req.params.id;
   if (kebabID) {
@@ -77,7 +77,7 @@ router.delete("/:id", async (req, res) => {
 
 router.put("/like/:id", async (req, res, next) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
   const kebabID = req.params.id;
   const like = req.body.like;
@@ -90,7 +90,7 @@ router.put("/like/:id", async (req, res, next) => {
 });
 router.put("/rekebab/:id", async (req, res, next) => {
   if (!req.user) {
-    return res.redirect(redirectLink);
+    return res.sendStatus(401);
   }
   const kebabID = req.params.id;
   const reKebab = req.body.reKebab;
