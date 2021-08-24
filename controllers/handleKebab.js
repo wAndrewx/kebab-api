@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     await updateUserKebab.save();
     await newKebab.save();
 
-    return res.sendStatus(201);
+    return res.send(newKebab);
   } catch (err) {
     return res.send(err).status(400);
   }

@@ -46,8 +46,8 @@ router.post("/", async (req, res, next) => {
     //send email to verify
     utils.emailVerifyHash(genVerifyHash, body.email);
     return res
-      .status(201)
-      .send({ message: "Account created, verify your email" });
+      .send({ message: "Account created, verify your email" })
+      .status(201);
   } catch (err) {
     if (err.name.includes("MongoError")) {
       return res.status(406).send({ message: "Use a different email" });

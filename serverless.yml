@@ -10,18 +10,26 @@ provider:
   runtime: nodejs12.x
   memorySize: 256
   lambdaHashingVersion: "20201221"
+  environment:
+    MONGODB_PW: ${env:MONGODB_PW}
+    MONGODB_NAME: ${env:MONGODB_NAME}
+    VERIFY_SECRET: ${env:VERIFY_SECRET}
+    JWT_SECRET: ${env:JWT_SECRET}
+    GMAIL_EMAIL: ${env:GMAIL_EMAIL}
+    GMAIL_PW: ${env:GMAIL_PW}
+    TRUSTED_USER_PW: ${env:TRUSTED_USER_PW}
 
 functions:
   twitter-mock-API:
     handler: handler.handler
     events:
-      - http: ANY /{proxy+} # do not change
+      - http: ANY /{proxy+}
       - http: ANY /
-    environment:
-      MONGODB_PW: ${env:MONGODB_PW}
-      MONGODB_NAME: ${env:MONGODB_NAME}
-      VERIFY_SECRET: ${env:VERIFY_SECRET}
-      JWT_SECRET: ${env:JWT_SECRET}
-      GMAIL_EMAIL: ${env:GMAIL_EMAIL}
-      GMAIL_PW: ${env:GMAIL_PW}
-      TRUSTED_USER_PW: ${env:TRUSTED_USER_PW}
+  login:
+    handler: handler.handler
+    events:
+      - http: POST /api/login
+  register:
+    handler: handler.handler
+    events:
+      - http: POST /api/register
