@@ -1,14 +1,14 @@
-## Hosting
-- API hosted on AWS Lambda using AWS API Gateway 
- - Using serverless
 ## Technologies
 - Node
 - Express
-- SocketIO
 - MongoDB
     - Mongoose
 - React
 - ChakraUI
+### Hosting
+- Serverless
+ - AWS Lambda
+ - API Gateway
 
 ## Usage
 
