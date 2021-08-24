@@ -52,7 +52,7 @@ router.post("/", async (req, res, next) => {
     if (err.name.includes("MongoError")) {
       return res.status(406).send({ message: "Use a different email" });
     }
-    return res.send(err);
+    return res.send({ message: err });
   }
 });
 
