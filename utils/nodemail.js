@@ -20,9 +20,7 @@ const emailVerifyHash = (hash, email) => {
   };
 
   transporter.sendMail(message, (err) => {
-    if (process.env.NODE_ENV.includes("dev")) {
       console.log(err);
-    }
   });
 };
 
