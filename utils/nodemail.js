@@ -12,7 +12,7 @@ const emailVerifyHash = (hash, email) => {
   const verifyLink = `http://localhost:8080/verify/${hash}`;
 
   var message = {
-    from: `WebSocket app 👽 <${process.env.GMAIL_EMAIL}>`,
+    from: `Twitter mock app 👽 <${process.env.GMAIL_EMAIL}>`,
     to: email,
     subject: "Verification for WebSocket app",
     text: "Hello please click here to verify",
@@ -20,7 +20,7 @@ const emailVerifyHash = (hash, email) => {
   };
 
   transporter.sendMail(message, (err) => {
-      console.log(err);
+    console.log("EMAIL ERROR:", err);
   });
 };
 

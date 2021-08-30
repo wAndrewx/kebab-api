@@ -28,7 +28,6 @@ router.post("/", async (req, res, next) => {
 
     const pwHash = await bcryptjs.hash(body.password, 10);
     const genVerifyHash = cryptoJS.AES.encrypt(
-      //handle email regex front end
       body.email,
       process.env.VERIFY_SECRET
     )
@@ -59,8 +58,9 @@ router.post("/", async (req, res, next) => {
 
 router.get("/verify/:hash", async (req, res, next) => {
   const paramHash = req.params.hash.replaceAll("-", "/");
-  const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.SECRET);
+  const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.VERIFY_SECRET);
   const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
+
   try {
     await User.findOneAndUpdate({ email: toStringHash }, { verified: true });
     res.status(204);
