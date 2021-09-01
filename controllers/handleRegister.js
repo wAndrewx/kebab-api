@@ -11,11 +11,9 @@ router.post("/", async (req, res, next) => {
   if (!body || !body.username || !body.password || !body.email) {
     return res.status(406).send({ message: "Fill in the fields" });
   }
-  if (Object.keys(body).length === 0) {
-    return res.status(400).json({ message: "Fill in the fields" });
-  }
+
   if (body.password.length < 7) {
-    return res.status(406).json({ message: "Password is too short" });
+    return res.status(406).send({ message: "Password is too short" });
   }
   try {
     const reqName = await User.find({ username: body.username });
@@ -23,7 +21,7 @@ router.post("/", async (req, res, next) => {
     if (reqName.length !== 0) {
       return res
         .status(406)
-        .json({ message: `Please choose a different user name` });
+        .send({ message: `Please choose a different user name` });
     }
 
     const pwHash = await bcryptjs.hash(body.password, 10);
@@ -43,16 +41,16 @@ router.post("/", async (req, res, next) => {
 
     const newUser = new User(reqUser);
     await newUser.save();
-    //json email to verify
+    //send email to verify
     utils.emailVerifyHash(genVerifyHash, body.email);
     return res
-      .json({ message: "Account created, verify your email" })
-      .status(201);
+      .status(201)
+      .send({ message: "Account created, verify your email" });
   } catch (err) {
     if (err.name.includes("MongoError")) {
-      return res.status(406).json({ message: "Use a different email" });
+      return res.status(406).send({ message: "Use a different email" });
     }
-    return res.json({ message: err });
+    return res.send({ message: err });
   }
 });
 

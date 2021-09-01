@@ -58,7 +58,7 @@ describe("User Login /POST", () => {
 
 describe.only("User register /POST", () => {
   test("should fail, empty fields ", async () => {
-    const res = await req.post("/api/register").send().expect(400);
+    const res = await req.post("/api/register").send().expect(406);
     expect(res.body).toBeDefined();
     expect(res.body.message).toBeDefined();
     expect(res.body).toHaveProperty("message", "Fill in the fields");
@@ -95,7 +95,7 @@ describe.only("User register /POST", () => {
       .post("/api/register")
       .send(seed.nonExistantUser)
       .expect(201);
-    console.log(res.body);
+    // console.log(res.body);
     expect(res.body).toBeDefined();
     expect(res.body.message).toBeDefined();
     expect(res.body).toHaveProperty(

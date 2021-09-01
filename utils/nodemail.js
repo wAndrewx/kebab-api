@@ -20,7 +20,7 @@ const emailVerifyHash = (hash, email) => {
   };
 
   transporter.sendMail(message, (err) => {
-    console.log("EMAIL ERROR:", err);
+    // console.log("EMAIL ERROR:", err);
   });
 };
 
