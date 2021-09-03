@@ -66,6 +66,8 @@ router.delete("/:id", async (req, res) => {
           { $pullAll: { kebab: [kebabID] } }
         );
         return res.send(200);
+      }else {
+        return res.status(400).send({ message: "Not your tweet" });
       }
     } catch (error) {
       return res.send(error);
@@ -81,12 +83,10 @@ router.put("/like/:id", async (req, res, next) => {
   const like = req.body.like;
 
   try {
-    if (req.user.kebab.includes(kebabID)) {
       await Kebab.findByIdAndUpdate(kebabID, { likes: like });
       return res.sendStatus(200);
-    }
   } catch (error) {
-    return res.send(error).status(400);
+    return res.status(400).send(error);
   }
 });
 router.put("/rekebab/:id", async (req, res, next) => {
@@ -96,12 +96,10 @@ router.put("/rekebab/:id", async (req, res, next) => {
   const kebabID = req.params.id;
   const reKebab = req.body.reKebab;
   try {
-    if (req.user.kebab.includes(kebabID)) {
       await Kebab.findByIdAndUpdate(kebabID, {
         reKebabs: reKebab,
         date: Date.now,
       });
-    }
     return res.sendStatus(200);
   } catch (error) {
     return res.send(error).status(400);

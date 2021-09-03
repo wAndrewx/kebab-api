@@ -31,7 +31,9 @@ router.post("/", async (req, res, next) => {
       process.env.JWT_SECRET
     );
 
-    return res.status(202).send({ message: "Succesfully logged in", token });
+    return res
+      .status(202)
+      .send({ message: "Succesfully logged in", token, user: body.username });
   }
 });
 module.exports = router;
