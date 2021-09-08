@@ -21,6 +21,18 @@ const kebabSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  usersLiked: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  usersRetweet: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 kebabSchema.set("toJSON", {

@@ -26,6 +26,18 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  tweetsLiked: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Kebab",
+    },
+  ],
+  tweetsRetweeted: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Kebab",
+    },
+  ],
 });
 
 userSchema.set("toJSON", {

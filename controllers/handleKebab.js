@@ -79,30 +79,67 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.put("/like/:id", async (req, res, next) => {
-  if (!req.user) {
-    return res.sendStatus(401);
+  const kebabID = req.params.id; //id of tweet
+  if (!req.user || !kebabID) {
+    return res.sendStatus(400);
   } // check if the kebab is created by user
-  const kebabID = req.params.id;
-  const like = req.body.like;
 
   try {
-    await Kebab.findByIdAndUpdate(kebabID, { likes: like });
-    return res.sendStatus(200);
+    if (req.user.tweetsLiked.includes(kebabID)) {
+      // if found dislike, sync up with front end
+      // unlike
+      await Kebab.findByIdAndUpdate(kebabID, {
+        $pull: { usersLiked: req.user.id },
+        $inc: { likes: -1 },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { tweetsLiked: kebabID },
+      });
+      console.log("Unlike");
+    } else {
+      await Kebab.findByIdAndUpdate(kebabID, {
+        $push: { usersLiked: req.user.id },
+        $inc: { likes: 1 },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: { tweetsLiked: kebabID },
+      });
+      console.log("Like");
+    }
+    return res.sendStatus(200); // return the length of usersLiked
   } catch (error) {
     return res.status(400).send(error);
   }
 });
 router.put("/rekebab/:id", async (req, res, next) => {
-  if (!req.user) {
+  const kebabID = req.params.id; // id of tweet
+  if (!req.user || !kebabID) {
     return res.sendStatus(401);
   }
-  const kebabID = req.params.id;
-  const reKebab = req.body.reKebab;
   try {
-    await Kebab.findByIdAndUpdate(kebabID, {
-      reKebabs: reKebab,
-      date: Date.now,
-    });
+    if (req.user.tweetsRetweeted.includes(kebabID)) {
+      // if found dislike, sync up with front end
+      // unlike
+      await Kebab.findByIdAndUpdate(kebabID, {
+        $pull: { usersRetweet: req.user.id },
+        $inc: { reKebabs: -1 },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { tweetsRetweeted: kebabID },
+      });
+    } else {
+      await Kebab.findByIdAndUpdate(kebabID, {
+        $push: { usersRetweet: req.user.id },
+        $inc: { reKebabs: 1 },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: { tweetsRetweeted: kebabID },
+      });
+
+      await Kebab.findByIdAndUpdate(kebabID, {
+        date: new Date,
+      });
+    }
     return res.sendStatus(200);
   } catch (error) {
     return res.send(error).status(400);
