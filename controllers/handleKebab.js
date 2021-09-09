@@ -43,8 +43,12 @@ router.get("/:id", async (req, res) => {
     return res.sendStatus(401);
   }
   try {
-    const profileID = req.params.id;
-    const getProfileTweet = await Kebab.find({ user: { _id: profileID } });
+    const profileID = req.params.id; //find user from username then use that as id
+    const getProfileTweet = await Kebab.find({
+      user: { _id: profileID },
+    }).populate("user", {
+      username: 1,
+    });
     return res.json(getProfileTweet).status(200);
   } catch (err) {
     return res.send(err).status(400);
@@ -68,7 +72,7 @@ router.delete("/:id", async (req, res) => {
           { _id: req.user.id },
           { $pullAll: { kebab: [kebabID] } }
         );
-        return res.send(200);
+        return res.sendStatus(200);
       } else {
         return res.status(400).send({ message: "Not your tweet" });
       }
@@ -137,7 +141,7 @@ router.put("/rekebab/:id", async (req, res, next) => {
       });
 
       await Kebab.findByIdAndUpdate(kebabID, {
-        date: new Date,
+        date: new Date(),
       });
     }
     return res.sendStatus(200);
