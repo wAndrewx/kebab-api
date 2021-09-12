@@ -56,7 +56,7 @@ describe("User Login /POST", () => {
   });
 });
 
-describe.only("User register /POST", () => {
+describe("User register /POST", () => {
   test("should fail, empty fields ", async () => {
     const res = await req.post("/api/register").send().expect(406);
     expect(res.body).toBeDefined();

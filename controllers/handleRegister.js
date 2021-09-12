@@ -61,9 +61,9 @@ router.get("/verify/:hash", async (req, res, next) => {
 
   try {
     await User.findOneAndUpdate({ email: toStringHash }, { verified: true });
-    res.status(204);
+    res.send("Verified").status(204);
   } catch (error) {
-    res.status(400);
+    res.status(400).send("Not verified");
   }
 });
 

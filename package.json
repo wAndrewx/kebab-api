@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./index.js",
     "dev": "nodemon ./index.js",
-    "test": "jest --verbose",
+    "test": "jest --verbose --coverage",
     "start:test": "cross-env NODE_ENV=test node index.js",
     "build:dev": "serverless deploy --stage dev",
     "build:prod": "serverless deploy --stage production"
