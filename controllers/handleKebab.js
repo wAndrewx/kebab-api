@@ -38,18 +38,30 @@ router.post("/", async (req, res) => {
 });
 
 // requesting someone elses tweets
-router.get("/:id", async (req, res) => {
-  if (!req.user) {
+router.get("/profile/:id?", async (req, res) => {
+  // let username = req.query.username;
+  const profileID = req.params.id; //find user from username then use that as id
+
+  if (!req.user || !profileID) {
     return res.sendStatus(401);
   }
+
   try {
-    const profileID = req.params.id; //find user from username then use that as id
+    // if (!username && profileID) {
     const getProfileTweet = await Kebab.find({
       user: { _id: profileID },
     }).populate("user", {
       username: 1,
     });
     return res.json(getProfileTweet).status(200);
+    // } else if (username && !profileID) {
+    //   const getProfileWithUsername = await Kebab.find({
+    //     user: { username: username },
+    //   }).populate("user", {
+    //     username: 1,
+    //   });
+    //   return res.json(getProfileWithUsername).status(200);
+    // }
   } catch (err) {
     return res.send(err).status(400);
   }
