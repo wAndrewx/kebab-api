@@ -9,7 +9,7 @@ const emailVerifyHash = (hash, email) => {
       pass: process.env.GMAIL_PW,
     },
   });
-  const verifyLink = `http://localhost:8080/verify/${hash}`;
+  const verifyLink = `http://twittermock.netlify.app/verify/${hash}`;
 
   var message = {
     from: `Twitter mock app 👽 <${process.env.GMAIL_EMAIL}>`,
