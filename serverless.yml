@@ -33,3 +33,7 @@ functions:
     handler: handler.handler
     events:
       - http: POST /api/register
+  kebab:
+    handler: handler.handler
+    events:
+      - http: ANY /api/kebab
