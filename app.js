@@ -19,7 +19,7 @@ try {
 } catch (error) {
   console.log(error);
 }
-app.use(cors({ origin: true }));
+app.use(cors({ origin: "https://twittermock.netlify.app/" }));
 app.use(express.json());
 
 app.use("/api/register", registerRoute);

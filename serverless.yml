@@ -3,6 +3,9 @@ app: twitter-mock
 service: twitter-mock-api
 useDotenv: true
 
+plugins: 
+  - serverless-offline
+
 frameworkVersion: "2"
 
 provider:
@@ -37,3 +40,4 @@ functions:
     handler: handler.handler
     events:
       - http: ANY /api/kebab
+ 

@@ -58,7 +58,7 @@ router.get("/verify/:hash", async (req, res, next) => {
   const paramHash = req.params.hash.replaceAll("-", "/");
   const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.VERIFY_SECRET);
   const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
-
+  console.log("Endpoint reached")
   try {
     let find = await User.findOneAndUpdate(
       { email: toStringHash },
