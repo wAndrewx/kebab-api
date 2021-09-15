@@ -3,7 +3,7 @@ app: twitter-mock
 service: twitter-mock-api
 useDotenv: true
 
-plugins: 
+plugins:
   - serverless-offline
 
 frameworkVersion: "2"
@@ -40,4 +40,7 @@ functions:
     handler: handler.handler
     events:
       - http: ANY /api/kebab
- 
+  # verify:
+  #   handler: handler.handler
+  #   events:
+  #     - http: ANY /api/verify/{proxy+}

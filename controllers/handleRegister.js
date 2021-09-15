@@ -54,24 +54,4 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get("/verify/:hash", async (req, res, next) => {
-  const paramHash = req.params.hash.replaceAll("-", "/");
-  const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.VERIFY_SECRET);
-  const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
-  console.log("Endpoint reached")
-  try {
-    let find = await User.findOneAndUpdate(
-      { email: toStringHash },
-      { verified: true }
-    );
-    if (!find) {
-      res.send("User does not exist").status(204);
-    } else {
-      res.send("You are now verified").status(204);
-    }
-  } catch (error) {
-    res.status(400).send("Not verified");
-  }
-});
-
 module.exports = router;
