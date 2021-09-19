@@ -2,9 +2,9 @@ const router = require("express").Router();
 const User = require("../model/user");
 const cryptoJS = require("crypto-js");
 
-router.get("/:hash", async (req, res, next) => {
-  console.log("what");
-  const paramHash = req.params.hash.replaceAll("-", "/");
+router.post("/:hash", async (req, res, next) => {
+  const paramHash = req.params.hash.split("-").join("/");
+
   const decrypt = cryptoJS.AES.decrypt(paramHash, process.env.VERIFY_SECRET);
   const toStringHash = decrypt.toString(cryptoJS.enc.Utf8);
   try {
