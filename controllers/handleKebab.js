@@ -19,6 +19,11 @@ router.post("/", async (req, res) => {
     return res.sendStatus(401);
   }
 
+  // console.log(req.user.verified)
+  if (!req.user.verified) {
+    return res.send({ message: "Please verify to post a tweet" });
+  }
+
   try {
     const content = { content: req.body.content, user: req.token.id };
     const newKebab = new Kebab(content);

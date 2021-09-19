@@ -21,14 +21,14 @@ describe("User Login /POST", () => {
     expect(res.body).toHaveProperty("message", "User does not exist");
   });
 
-  test("should fail since unverified user ", async () => {
-    const res = await req
-      .post("/api/login")
-      .send({ username: seed.unverified.username, password: "password123" })
-      .expect(403);
-    expect(res.body).toBeDefined();
-    expect(res.body).toHaveProperty("message", "Please verify your account");
-  });
+  // test("should fail since unverified user ", async () => {
+  //   const res = await req
+  //     .post("/api/login")
+  //     .send({ username: seed.unverified.username, password: "password123" })
+  //     .expect(403);
+  //   expect(res.body).toBeDefined();
+  //   expect(res.body).toHaveProperty("message", "Please verify your account");
+  // });
 
   test("should fail wrong password ", async () => {
     const res = await req

@@ -21,9 +21,9 @@ router.post("/", async (req, res, next) => {
   if (!comparePW) {
     return res.status(406).send({ message: "Wrong password" });
   }
-  if (!loggingUser.verified) {
-    return res.status(403).send({ message: "Please verify your account" });
-  }
+  // if (!loggingUser.verified) {
+  //   return res.status(403).send({ message: "Please verify your account" });
+  // }
 
   if (comparePW && loggingUser.verified) {
     const token = await jwt.sign(

@@ -26,8 +26,14 @@ functions:
   twitter-mock-API:
     handler: handler.handler
     events:
-      - http: ANY /{proxy+}
-      - http: ANY /
+    - http:
+        path: /{proxy+}
+        cors: true
+        method: ANY
+    - http:
+        path: /
+        cors: true
+        method: ANY
   login:
     handler: handler.handler
     events:
@@ -40,7 +46,23 @@ functions:
     handler: handler.handler
     events:
       - http: ANY /api/kebab
-  # verify:
-  #   handler: handler.handler
-  #   events:
-  #     - http: ANY /api/verify/{proxy+}
+  verify:
+    handler: handler.handler
+    events:
+      - http:
+          path: /api/verify/{hash}
+          method: any
+          cors:
+            origins: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+          request:
+            parameters:
+              paths:
+                hash: true
